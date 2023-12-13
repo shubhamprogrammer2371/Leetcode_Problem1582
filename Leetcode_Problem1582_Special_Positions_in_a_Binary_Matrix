@@ -1,0 +1,76 @@
+int numSpecial(int** mat, int matSize, int* matColSize) {
+    int result = 0 , *rowSums = calloc(matSize,sizeof(int)) ,  *colSums = calloc(matColSize[0],sizeof(int));
+    for (int i = 0 ; i < matSize ; i++) 
+    {
+        for (int j = 0 ; j < matColSize[0] ; j++) 
+        {
+            rowSums[i] += mat[i][j];
+            colSums[j] += mat[i][j];
+        }
+    }
+    for (int i = 0; i < matSize; i++) 
+        for (int j = 0; j < matColSize[0]; j++) 
+            result += (mat[i][j] == 1 && rowSums[i] == 1 && colSums[j] == 1)  ? 1 : 0;
+    free(rowSums);
+    free(colSums);
+    return result;
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+int numSpecial(int** mat, int matSize, int* matColSize) {
+    int *rows = calloc(matSize,sizeof(int)), *column = calloc((*matColSize),sizeof(int)) , special_positions = 0;
+    for( int i = 0 ; i < matSize ; i++)
+        for( int j = 0 ; j < (*matColSize) ; j++)
+            rows[i] += (mat[i][j]);
+    for( int i = 0 ; i < (*matColSize) ; i++)
+        for( int j = 0 ; j < matSize ; j++)
+            column[i] += (mat[j][i]);
+    for( int i = 0 ; i < matSize ; i++)
+        for( int j = 0 ; j < (*matColSize) ; j++)
+            special_positions += (rows[i] == 1 && column[j] == 1 && mat[i][j] == 1) ? 1 : 0;
+    free(rows);
+    free(column);
+    return special_positions;
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+int numSpecial(int** mat, int matSize, int* matColSize)
+{
+    int count = 0 , rows = 0 , columns = 0 , i = 0;
+    for(rows = 0 ; rows < matSize ; rows++)
+    {
+        for(columns = 0 ; columns < (*matColSize) ; columns++)
+        {
+            if(mat[rows][columns])
+            {
+                bool match = 1;
+                for(i = 0 ; i < (*matColSize) ; i++)
+                {
+                    if((mat[rows][i] == 1) && (i != columns))
+                    {
+                        match = 0;
+                        break;
+                    }
+                }
+                if(!match)
+                    break;
+                for(i = 0 ; i < matSize ; i++)
+                {
+                    if((mat[i][columns] == 1) && (i != rows))
+                    {
+                        match = 0;
+                        break;
+                    }
+                }
+                count += (match) ? 1 : 0;
+            }
+        }
+    }
+    return count;
+}
